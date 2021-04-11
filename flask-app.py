@@ -62,7 +62,7 @@ def handle_dialog(res, req):
                           + first_name.title() \
                           + '. Я - Алиса. Поиграем в Угадай город?'
             res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True}]
-    elif 'Да' in req['request']['original_utterance']:
+    elif 'да' in req['request']['original_utterance'].lower():
         city = random.choice(cities)
         res['response']['card'] = {}
         res['response']['card']['type'] = 'BigImage'
