@@ -69,15 +69,15 @@ def handle_dialog(res, req):
             res['response']['card']['type'] = 'BigImage'
             res['response']['card']['title'] = 'Что это за город?'
             res['response']['card']['image_id'] = random.choice(cities[city])
-        if get_city(req) == city:
-            res['response']['text'] = 'Правильно! Сыграем еще?'
-            res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True},
-                                          {'title': 'Да',
-                                           "url": f"https://yandex.ru/maps/?mode=search&text={city}", 'hide': True}
-                                          ]
-        elif get_city(req) != city:
-            res['response']['text'] = \
-                'Нет, это не этот город. Попробуй еще разок!'
+            if get_city(req) == city:
+                res['response']['text'] = 'Правильно! Сыграем еще?'
+                res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True},
+                                              {'title': 'Да',
+                                               "url": f"https://yandex.ru/maps/?mode=search&text={city}", 'hide': True}
+                                              ]
+            else:
+                res['response']['text'] = \
+                    'Нет, это не этот город. Попробуй еще разок!'
         else:
             res['response']['text'] = 'Все говорят нет, а ты поиграй!'
             res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True}]
