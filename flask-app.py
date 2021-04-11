@@ -65,6 +65,7 @@ def handle_dialog(res, req):
                           + '. Я - Алиса. Поиграем в Угадай город?'
             res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True}]
     else:
+        res['response']['text'] = 'Итак!'
         sessionStorage[user_id]['city'] = 'москва'
         if sessionStorage[user_id]['test'] == 0:
             if 'да' in req['request']['original_utterance'].lower():
