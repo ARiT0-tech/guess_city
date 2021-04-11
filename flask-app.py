@@ -71,7 +71,7 @@ def handle_dialog(res, req):
                 res['response']['card'] = {}
                 res['response']['card']['type'] = 'BigImage'
                 res['response']['card']['title'] = 'Что это за город?'
-                res['response']['card']['image_id'] = random.choice(cities[sessionStorage[user_id]['city'][0]])
+                res['response']['card']['image_id'] = random.choice(cities[sessionStorage[user_id]['city']])
                 res['response']['text'] = 'Итак!'
                 sessionStorage[user_id]['test'] = 1
             elif 'нет' in req['request']['original_utterance'].lower():
