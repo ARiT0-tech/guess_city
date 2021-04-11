@@ -62,24 +62,25 @@ def handle_dialog(res, req):
                           + first_name.title() \
                           + '. Я - Алиса. Поиграем в Угадай город?'
             res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True}]
-    if 'Да' in req['request']['original_utterance']:
-        city = random.choice(cities)
-        res['response']['card'] = {}
-        res['response']['card']['type'] = 'BigImage'
-        res['response']['card']['title'] = 'Что это за город?'
-        res['response']['card']['image_id'] = random.choice(cities[city])
-        if get_city(req) == city:
-            res['response']['text'] = 'Правильно! Сыграем еще?'
-            res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True},
-                                          {'title': 'Да',
-                                           "url": f"https://yandex.ru/maps/?mode=search&text={city}", 'hide': True}
-                                          ]
-        else:
-            res['response']['text'] = \
-                'Нет, это не этот город. Попробуй еще разок!'
     else:
-        res['response']['text'] = 'Все говорят нет, а ты поиграй!'
-        res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True}]
+        if 'Да' in req['request']['original_utterance']:
+            city = random.choice(cities)
+            res['response']['card'] = {}
+            res['response']['card']['type'] = 'BigImage'
+            res['response']['card']['title'] = 'Что это за город?'
+            res['response']['card']['image_id'] = random.choice(cities[city])
+            if get_city(req) == city:
+                res['response']['text'] = 'Правильно! Сыграем еще?'
+                res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True},
+                                              {'title': 'Да',
+                                               "url": f"https://yandex.ru/maps/?mode=search&text={city}", 'hide': True}
+                                              ]
+            else:
+                res['response']['text'] = \
+                    'Нет, это не этот город. Попробуй еще разок!'
+        else:
+            res['response']['text'] = 'Все говорят нет, а ты поиграй!'
+            res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True}]
 
 
 def get_city(req):
