@@ -88,7 +88,7 @@ def handle_dialog(res, req):
                                                "url": f"https://yandex.ru/maps/?mode=search&text={sessionStorage[user_id]['city']}",
                                                'hide': True}
                                               ]
-            elif get_city(req).lower() != sessionStorage[user_id]['city']:
+            else:
                 res['response']['text'] = \
                     'Нет, это не этот город. Попробуй еще разок!'
 
