@@ -16,7 +16,7 @@ cities = {
     'париж': ["1652229/f77136c2364eb90a3ea8",
               '3450494/aca7ed7acefde22341bdc']
 }
-
+cit = list(cities)
 sessionStorage = {}
 
 
@@ -65,8 +65,7 @@ def handle_dialog(res, req):
                           + '. Я - Алиса. Поиграем в Угадай город?'
             res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True}]
     else:
-        cit = list(cities)
-        sessionStorage[user_id]['city'] = random.choice(cit).lower()
+        sessionStorage[user_id]['city'] = random.choice(cit)
         if sessionStorage[user_id]['test'] == 0:
             if 'да' in req['request']['original_utterance'].lower():
                 res['response']['card'] = {}
