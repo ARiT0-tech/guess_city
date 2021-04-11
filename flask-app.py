@@ -65,7 +65,6 @@ def handle_dialog(res, req):
                           + '. Я - Алиса. Поиграем в Угадай город?'
             res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True}]
     else:
-        res['response']['text'] = 'Итак!'
         sessionStorage[user_id]['city'] = 'москва'
         if sessionStorage[user_id]['test'] == 0:
             if 'да' in req['request']['original_utterance'].lower():
@@ -73,6 +72,7 @@ def handle_dialog(res, req):
                 res['response']['card']['type'] = 'BigImage'
                 res['response']['card']['title'] = 'Что это за город?'
                 res['response']['card']['image_id'] = random.choice(cities[sessionStorage[user_id]['city']])
+                res['response']['text'] = 'Итак!'
                 sessionStorage[user_id]['test'] = 1
             elif 'нет' in req['request']['original_utterance'].lower():
                 res['response']['text'] = 'Все говорят нет, а ты поиграй!'
