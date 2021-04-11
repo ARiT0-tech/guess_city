@@ -78,7 +78,7 @@ def handle_dialog(res, req):
                 res['response']['text'] = 'Все говорят нет, а ты поиграй!'
                 res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True}]
             elif 'покажи этот город на карте' in req['request']['original_utterance'].lower():
-                res['response']['text'] = 'Смотри'
+                res['response']['text'] = 'Сыграем ещё?'
                 res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True}]
 
         else:
