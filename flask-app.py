@@ -62,24 +62,25 @@ def handle_dialog(res, req):
                           + first_name.title() \
                           + '. Я - Алиса. Поиграем в Угадай город?'
             res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True}]
-    elif 'да' == req['request']['command'].lower():
-        city = random.choice(cities)
-        res['response']['card'] = {}
-        res['response']['card']['type'] = 'BigImage'
-        res['response']['card']['title'] = 'Что это за город?'
-        res['response']['card']['image_id'] = random.choice(cities[city])
-        if get_city(req) == city:
+    else:
+        city = 'москва'
+        if req['request']['command'].lower() == 'да':
+            res['response']['card'] = {}
+            res['response']['card']['type'] = 'BigImage'
+            res['response']['card']['title'] = 'Что это за город?'
+            res['response']['card']['image_id'] = random.choice(cities[city])
+        elif get_city(req) == city:
             res['response']['text'] = 'Правильно! Сыграем еще?'
             res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True},
                                           {'title': 'Да',
                                            "url": f"https://yandex.ru/maps/?mode=search&text={city}", 'hide': True}
                                           ]
-        else:
+        elif get_city(req) != city:
             res['response']['text'] = \
                 'Нет, это не этот город. Попробуй еще разок!'
-    else:
-        res['response']['text'] = 'Все говорят нет, а ты поиграй!'
-        res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True}]
+        else:
+            res['response']['text'] = 'Все говорят нет, а ты поиграй!'
+            res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True}]
 
 
 def get_city(req):
