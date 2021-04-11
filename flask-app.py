@@ -9,12 +9,12 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
 
 cities = {
-    'москва': ['1540737/daa6e420d33102bf6947',
-               '213044/7df73ae4cc715175059e'],
-    'нью-йорк': ['1652229/728d5c86707054d4745f',
-                 '1030494/aca7ed7acefde2606bdc'],
-    'париж': ["1652229/f77136c2364eb90a3ea8",
-              '3450494/aca7ed7acefde22341bdc']
+    'москва': [['1540737/daa6e420d33102bf6947',
+                '213044/7df73ae4cc715175059e'], ['россия']],
+    'нью-йорк': [['1652229/728d5c86707054d4745f',
+                  '1030494/aca7ed7acefde2606bdc'], ['америка', 'сша']],
+    'париж': [["1652229/f77136c2364eb90a3ea8",
+               '3450494/aca7ed7acefde22341bdc'], ['франция']]
 }
 cit = list(cities)
 sessionStorage = {}
@@ -71,25 +71,32 @@ def handle_dialog(res, req):
                 res['response']['card'] = {}
                 res['response']['card']['type'] = 'BigImage'
                 res['response']['card']['title'] = 'Что это за город?'
-                res['response']['card']['image_id'] = random.choice(cities[sessionStorage[user_id]['city']])
+                res['response']['card']['image_id'] = random.choice(cities[sessionStorage[user_id]['city'][0]])
                 res['response']['text'] = 'Итак!'
                 sessionStorage[user_id]['test'] = 1
             elif 'нет' in req['request']['original_utterance'].lower():
                 res['response']['text'] = 'Все говорят нет, а ты поиграй!'
                 res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True}]
-            elif 'покажи этот город на карте' in req['request']['original_utterance'].lower():
-                res['response']['text'] = 'Сыграем ещё?'
-                res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True}]
-
-        else:
+        elif sessionStorage[user_id]['test'] == 1:
             if sessionStorage[user_id]['city'] in req['request']['original_utterance'].lower():
-                sessionStorage[user_id]['test'] = 0
-                res['response']['text'] = 'Правильно! Сыграем еще?'
+                sessionStorage[user_id]['test'] = 2
+                res['response']['text'] = 'Правильно! А в какой стране этот город?'
                 res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True},
                                               {'title': 'Покажи этот город на карте',
                                                "url": f"https://yandex.ru/maps/?mode=search&text={sessionStorage[user_id]['city']}",
                                                'hide': True}
                                               ]
+            else:
+                res['response']['text'] = \
+                    'Нет, это не этот город. Попробуй еще разок!'
+        elif sessionStorage[user_id]['test'] == 2:
+            if 'покажи этот город на карте' in req['request']['original_utterance'].lower():
+                res['response']['text'] = 'Сыграем ещё?'
+                res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True}]
+            elif req['request']['original_utterance'].lower() in cities[sessionStorage[user_id]['city']][1]:
+                sessionStorage[user_id]['test'] = 0
+                res['response']['text'] = 'Правильно! Сыграем ещё?'
+                res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True}]
             else:
                 res['response']['text'] = \
                     'Нет, это не этот город. Попробуй еще разок!'
