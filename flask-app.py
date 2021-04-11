@@ -40,7 +40,9 @@ def handle_dialog(res, req):
     if req['session']['new']:
         res['response']['text'] = 'Привет! Назови свое имя!'
         sessionStorage[user_id] = {
-            'first_name': None
+            'first_name': None,
+            'test': 0,
+            'city': None
         }
         res['response']['buttons'] = [{'title': 'Помощь', 'hide': True}]
         return
@@ -63,36 +65,41 @@ def handle_dialog(res, req):
                           + '. Я - Алиса. Поиграем в Угадай город?'
             res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True}]
     else:
-        city = 'москва'
-        if 'да' in req['request']['original_utterance'].lower():
-            res['response']['card'] = {}
-            res['response']['card']['type'] = 'BigImage'
-            res['response']['card']['title'] = 'Что это за город?'
-            res['response']['card']['image_id'] = random.choice(cities[city])
-            if get_city(req) == city:
+        sessionStorage[user_id]['city'] = 'москва'
+        if sessionStorage[user_id]['test'] == 0:
+            if 'да' in req['request']['original_utterance'].lower():
+                res['response']['card'] = {}
+                res['response']['card']['type'] = 'BigImage'
+                res['response']['card']['title'] = 'Что это за город?'
+                res['response']['card']['image_id'] = random.choice(cities[sessionStorage[user_id]['city']])
+                sessionStorage[user_id]['test'] = 1
+            elif 'нет' in req['request']['original_utterance'].lower():
+                res['response']['text'] = 'Все говорят нет, а ты поиграй!'
+                res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True}]
+        else:
+            if get_city(req).lower() == sessionStorage[user_id]['city']:
+                sessionStorage[user_id]['test'] = 0
                 res['response']['text'] = 'Правильно! Сыграем еще?'
                 res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True},
                                               {'title': 'Да',
-                                               "url": f"https://yandex.ru/maps/?mode=search&text={city}", 'hide': True}
+                                               "url": f"https://yandex.ru/maps/?mode=search&text={sessionStorage[user_id]['city']}",
+                                               'hide': True}
                                               ]
-            else:
+            elif get_city(req).lower() != sessionStorage[user_id]['city']:
                 res['response']['text'] = \
                     'Нет, это не этот город. Попробуй еще разок!'
-        else:
-            res['response']['text'] = 'Все говорят нет, а ты поиграй!'
-            res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True}]
 
 
 def get_city(req):
     for entity in req['request']['nlu']['entities']:
         if entity['type'] == 'YANDEX.GEO':
-            return entity['value'].get('city', None)
+            return entity['value'].get('city', 'none')
 
 
 def get_first_name(req):
     for entity in req['request']['nlu']['entities']:
         if entity['type'] == 'YANDEX.FIO':
-            return entity['value'].get('first_name', None)
+            return entity['value'].get('first_name', 'none')
 
 
 if __name__ == '__main__':
