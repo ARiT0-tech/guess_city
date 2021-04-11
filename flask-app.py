@@ -82,7 +82,7 @@ def handle_dialog(res, req):
                 res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True}]
 
         else:
-            if get_city(req).lower() == sessionStorage[user_id]['city']:
+            if sessionStorage[user_id]['city'] in req['request']['original_utterance'].lower():
                 sessionStorage[user_id]['test'] = 0
                 res['response']['text'] = 'Правильно! Сыграем еще?'
                 res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True},
@@ -93,12 +93,6 @@ def handle_dialog(res, req):
             else:
                 res['response']['text'] = \
                     'Нет, это не этот город. Попробуй еще разок!'
-
-
-def get_city(req):
-    for entity in req['request']['nlu']['entities']:
-        if entity['type'] == 'YANDEX.GEO':
-            return entity['value'].get('city', 'none')
 
 
 def get_first_name(req):
