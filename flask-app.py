@@ -77,6 +77,10 @@ def handle_dialog(res, req):
             elif 'нет' in req['request']['original_utterance'].lower():
                 res['response']['text'] = 'Все говорят нет, а ты поиграй!'
                 res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True}]
+            elif 'покажи этот город на карте' in req['request']['original_utterance'].lower():
+                res['response']['text'] = 'Смотри'
+                res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True}]
+
         else:
             if get_city(req).lower() == sessionStorage[user_id]['city']:
                 sessionStorage[user_id]['test'] = 0
@@ -86,7 +90,6 @@ def handle_dialog(res, req):
                                                "url": f"https://yandex.ru/maps/?mode=search&text={sessionStorage[user_id]['city']}",
                                                'hide': True}
                                               ]
-                res['response']['text'] = 'Правильно! Сыграем еще?'
             else:
                 res['response']['text'] = \
                     'Нет, это не этот город. Попробуй еще разок!'
