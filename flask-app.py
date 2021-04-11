@@ -64,12 +64,12 @@ def handle_dialog(res, req):
             res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True}]
     else:
         city = 'москва'
-        if req['request']['command'].lower() == 'да':
+        if 'да' in req['request']['original_utterance'].lower():
             res['response']['card'] = {}
             res['response']['card']['type'] = 'BigImage'
             res['response']['card']['title'] = 'Что это за город?'
             res['response']['card']['image_id'] = random.choice(cities[city])
-        elif get_city(req) == city:
+        if get_city(req) == city:
             res['response']['text'] = 'Правильно! Сыграем еще?'
             res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True},
                                           {'title': 'Да',
