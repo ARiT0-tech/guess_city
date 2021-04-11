@@ -65,6 +65,7 @@ def handle_dialog(res, req):
                           + '. Я - Алиса. Поиграем в Угадай город?'
             res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True}]
     else:
+
         sessionStorage[user_id]['city'] = 'москва'
         if sessionStorage[user_id]['test'] == 0:
             if 'да' in req['request']['original_utterance'].lower():
@@ -77,6 +78,7 @@ def handle_dialog(res, req):
             elif 'нет' in req['request']['original_utterance'].lower():
                 res['response']['text'] = 'Все говорят нет, а ты поиграй!'
                 res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True}]
+                res['response']['text'] = 'Итак!'
         else:
             if get_city(req).lower() == sessionStorage[user_id]['city']:
                 sessionStorage[user_id]['test'] = 0
