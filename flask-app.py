@@ -89,7 +89,7 @@ def handle_dialog(res, req):
         elif sessionStorage[user_id]['test'] == 1:
             if sessionStorage[user_id]['city'] in req['request']['original_utterance'].lower():
                 sessionStorage[user_id]['test'] = 2
-                res['response']['text'] = 'Правильно! Сыграем еще?'
+                res['response']['text'] = 'Правильно! А в какой стране этот город?'
                 res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True},
                                               {'title': 'Покажи этот город на карте',
                                                "url": f"https://yandex.ru/maps/?mode=search&text={sessionStorage[user_id]['city']}",
@@ -100,7 +100,7 @@ def handle_dialog(res, req):
                     'Нет, это не этот город. Попробуй еще разок!'
         elif sessionStorage[user_id]['test'] == 2:
             if 'покажи этот город на карте' in req['request']['original_utterance'].lower():
-                res['response']['text'] = 'Сыграем ещё?'
+                res['response']['text'] = 'Страна какая?'
                 res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True}]
             elif req['request']['original_utterance'].lower() in cities_land[sessionStorage[user_id]['city']]:
                 sessionStorage[user_id]['test'] = 0
