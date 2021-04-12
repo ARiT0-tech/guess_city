@@ -83,14 +83,14 @@ def handle_dialog(res, req):
                 res['response']['text'] = 'Все говорят нет, а ты поиграй!'
                 res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True}]
             elif 'покажи этот город на карте' in req['request']['original_utterance'].lower():
-                res['response']['text'] = f'{sessionStorage[user_id]["first_name"]} сыграем ещё?'
+                res['response']['text'] = f'{sessionStorage[user_id]["first_name"].title()} сыграем ещё?'
                 res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True}]
 
         elif sessionStorage[user_id]['test'] == 1:
             if sessionStorage[user_id]['city'] in req['request']['original_utterance'].lower():
                 sessionStorage[user_id]['test'] = 2
                 res['response'][
-                    'text'] = f'Правильно {sessionStorage[user_id]["first_name"]}! А в какой стране этот город?'
+                    'text'] = f'Правильно {sessionStorage[user_id]["first_name"].title()}! А в какой стране этот город?'
                 res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True},
                                               {'title': 'Покажи этот город на карте',
                                                "url": f"https://yandex.ru/maps/?mode=search&text={sessionStorage[user_id]['city']}",
@@ -98,18 +98,18 @@ def handle_dialog(res, req):
                                               ]
             else:
                 res['response']['text'] = \
-                    f'{sessionStorage[user_id]["first_name"]}, это не этот город. Попробуй еще разок!'
+                    f'{sessionStorage[user_id]["first_name"].title()}, это не этот город. Попробуй еще разок!'
         elif sessionStorage[user_id]['test'] == 2:
             if 'покажи этот город на карте' in req['request']['original_utterance'].lower():
-                res['response']['text'] = f'{sessionStorage[user_id]["first_name"]} страна какая?'
+                res['response']['text'] = f'{sessionStorage[user_id]["first_name"].title()} страна какая?'
                 res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True}]
             elif req['request']['original_utterance'].lower() in cities_land[sessionStorage[user_id]['city']]:
                 sessionStorage[user_id]['test'] = 0
-                res['response']['text'] = f'{sessionStorage[user_id]["first_name"]} правильно! Сыграем ещё?'
+                res['response']['text'] = f'{sessionStorage[user_id]["first_name"].title()} правильно! Сыграем ещё?'
                 res['response']['buttons'] = [{'title': 'Да', 'hide': True}, {'title': 'Нет', 'hide': True}]
             else:
                 res['response']['text'] = \
-                    f'{sessionStorage[user_id]["first_name"]}, это не эта страна . Попробуй еще разок!'
+                    f'{sessionStorage[user_id]["first_name"].title()}, это не эта страна . Попробуй еще разок!'
 
 
 def get_first_name(req):
